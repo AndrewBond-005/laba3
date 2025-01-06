@@ -1,30 +1,29 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.random.RandomGenerator;
+
 public class Main {
-    public static void main(String[] args) throws CloneNotSupportedException {
+    public static void main(String[] args) {
         King king = new King();
         Ring ring = new Ring(Size.SMALL, "кольцо");
         king.take(ring);
-        String notifers[]={"барабанщики","глашатаи"};
+        String notifers[] = {"барабанщики", "глашатаи"};
         ArrayList<Notifier> list = new ArrayList<>();
-        try{
-             list = king.send(100, new ArrayList<>(Arrays.asList(notifers)));
+        try {
+            list = king.send(100, new ArrayList<>(Arrays.asList(notifers)));
         } catch (CloneNotSupportedException e) {
             System.out.println("Попытка клонирования объекта, не реализующего интерфейс Cloneable");
         }
-        try{
+        try {
             list.get(0).work();
-        }
-        catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Выход за границы массива!");
         }
-
-        for (int i = 0; i < list.size(); i++) {
-            list.get(i).inform();
+        for (Notifier n : list) {
+            n.inform();
         }
         Prince prince = new Prince("принц");
-
-        king.getDecree().add(new Decree("та " + (new Woman()).getName() + ", на пальчик которой " + ring.putOn() + " золотое " +
+        king.getDecree().add(new Decree("та девушка, на пальчик которой наденется золотое " +
                 ring.name() + ", станет невестой " + prince.getName() + ". "));
         System.out.print(king.getDecree().get(0).getName());
         ArrayList<String> title = new ArrayList<>();
@@ -38,7 +37,8 @@ public class Main {
         title.add("кухарка");
         title.add("пастушка");
         System.out.print("Пришли ");
-        int count = (int) (((int) (Math.random() * 10)) * 0.4 + 4);//4-8
+        RandomGenerator rand = RandomGenerator.getDefault();
+        int count = rand.nextInt(4, 8);
         int success = 0;
         ArrayList<Woman> elected = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
@@ -57,7 +57,7 @@ public class Main {
                         success += 1;
                         elected.add(woman);
                     }
-		            if (i == 1) {
+                    if (i == 1) {
                         System.out.print(woman.getName() + ", ");
                     }
                 } catch (NullPointerException e) {
@@ -65,7 +65,7 @@ public class Main {
                 }
             }
         }
-       // System.out.println("");
+        // System.out.println("");
         if (success == 0) {
             System.out.println(". Никто из них не смог надеть кольцо. ");
 
