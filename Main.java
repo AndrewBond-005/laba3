@@ -1,34 +1,39 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+
 public class Main {
-    public static void main(String[] args) throws CloneNotSupportedException {
+    public static void main(String[] args) throws CloneNotSupportedException { // инвалид?
         King king = new King();
         Ring ring = new Ring(Size.SMALL, "кольцо");
         king.take(ring);
-        String notifers[]={"барабанщики","глашатаи"};
+
+        String notifers[] = { "барабанщики", "глашатаи" };
         ArrayList<Notifier> list = new ArrayList<>();
-        try{
-             list = king.send(100, new ArrayList<>(Arrays.asList(notifers)));
+        
+        try {
+            list = king.send(100, new ArrayList<>(Arrays.asList(notifers)));
         } catch (CloneNotSupportedException e) {
             System.out.println("Попытка клонирования объекта, не реализующего интерфейс Cloneable");
         }
-        try{
+        try {
             list.get(0).work();
-        }
-        catch (IndexOutOfBoundsException e){
-            System.out.println("Выход за границы массива!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Выход за границы массива!"); // какой выход за границы, если по 0 индексу нет элемента = лист пустой
         }
 
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) { // for (Notifier n : list) {n.inform();}
             list.get(i).inform();
         }
         Prince prince = new Prince("принц");
 
-        king.getDecree().add(new Decree("та " + (new Woman()).getName() + ", на пальчик которой " + ring.putOn() + " золотое " +
-                ring.name() + ", станет невестой " + prince.getName() + ". "));
+        king.getDecree()
+                .add(new Decree("та " + (new Woman()).getName() + ", на пальчик которой " + ring.putOn() + " золотое " +
+                        ring.name() + ", станет невестой " + prince.getName() + ". "));
         System.out.print(king.getDecree().get(0).getName());
+
+        /* не заебался? */
         ArrayList<String> title = new ArrayList<>();
-        title.add("принцесса");
+        title.add("принцесса"); 
         title.add("герцогиня");
         title.add("баронесса");
         title.add("маркиза");
@@ -37,13 +42,27 @@ public class Main {
         title.add("горничная");
         title.add("кухарка");
         title.add("пастушка");
+        /* --- */
+
         System.out.print("Пришли ");
-        int count = (int) (((int) (Math.random() * 10)) * 0.4 + 4);//4-8
+
+        
+        /* кто это написал, он еще живой?
+         * 
+         * RandomGenerator rand = RandomGenerator.getDefault();
+         * rand.nextInt(4, 8); -> 4-8
+         * 
+         */
+        int count = (int) (((int) (Math.random() * 10)) * 0.4 + 4);// 4-8 
+        /* ---*/
         int success = 0;
         ArrayList<Woman> elected = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
             for (String name : title) {
-                double sizeOfFinger = (double) ((int) (Math.random() * 10)) / 2 + (name.equals(title.get(0)) ? 14.5 : 15);//14.5-20
+
+                // тут то же самое, rand.nextDouble(14.5d, 20d);
+                double sizeOfFinger = (double) ((int) (Math.random() * 10)) / 2
+                        + (name.equals(title.get(0)) ? 14.5 : 15);// 14.5-20
                 Size size = null;
                 for (Size s : Size.values()) {
                     if (sizeOfFinger <= s.getMaxSize() && sizeOfFinger >= s.getMinSize()) {
@@ -57,7 +76,7 @@ public class Main {
                         success += 1;
                         elected.add(woman);
                     }
-		            if (i == 1) {
+                    if (i == 1) {
                         System.out.print(woman.getName() + ", ");
                     }
                 } catch (NullPointerException e) {
@@ -65,7 +84,7 @@ public class Main {
                 }
             }
         }
-       // System.out.println("");
+        // System.out.println("");
         if (success == 0) {
             System.out.println(". Никто из них не смог надеть кольцо. ");
 
@@ -85,6 +104,4 @@ public class Main {
         System.out.println("");
     }
 
-
 }
-
